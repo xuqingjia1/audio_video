@@ -15,7 +15,7 @@ class FFmpegs
 {
 public:
     FFmpegs();
-    static void aacDecode(const char *inFilename,AudioDecodeSpec *out);
+    static void aacDecode(const char *inFilename,AudioDecodeSpec &out);
 };
 
 #endif // FFMPEGS_H
