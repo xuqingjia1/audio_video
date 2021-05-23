@@ -2,10 +2,19 @@
 #define PLAYTHREAD_H
 
 
-class PlayThread
-{
+#include <QThread>
+
+class PlayThread : public QThread {
+    Q_OBJECT
+private:
+    void run();
+
 public:
-    PlayThread();
+    explicit PlayThread(QObject *parent = nullptr);
+    ~PlayThread();
+
+signals:
+
 };
 
 #endif // PLAYTHREAD_H
