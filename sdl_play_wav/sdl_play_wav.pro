@@ -10,10 +10,12 @@ CONFIG += c++11
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    playthread.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    playthread.h
 
 FORMS += \
     mainwindow.ui
@@ -22,3 +24,15 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+win32 {
+    SDL_HOME = F:/Dev/SDL2-2.0.14/x86_64-w64-mingw32
+}
+
+mac {
+    SDL_HOME = /usr/local/Cellar/sdl2/2.0.14_1
+}
+
+INCLUDEPATH += $${SDL_HOME}/include
+
+LIBS += -L $${SDL_HOME}/lib \
+        -lSDL2
