@@ -1,0 +1,1 @@
+config:x86:x86_64:generic:darwin:Apple clang version 12.0.0 (clang-1200.0.32.28):--prefix=/usr/local/ffmpeg --enable-shared --disable-static --enable-gpl --enable-nonfree --enable-libfdk-aac --enable-libx264 --enable-libx265

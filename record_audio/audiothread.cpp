@@ -24,7 +24,7 @@ extern "C" {
 #else
     #define FMT_NAME "avfoundation"
     #define DEVICE_NAME ":0"
-    #define FILEPATH "/Users/mj/Desktop/"
+    #define FILEPATH "/Users/xuqingjia/code/video/audio_video/video_commonLine"
 #endif
 
 AudioThread::AudioThread(QObject *parent) : QThread(parent) {
@@ -50,13 +50,13 @@ void showSpec(AVFormatContext *ctx) {
     // 获取音频参数
     AVCodecParameters *params = stream->codecpar;
     // 声道数
-    qDebug() << params->channels;
+    qDebug() << "声道数：" << params->channels;
     // 采样率
-    qDebug() << params->sample_rate;
+    qDebug() << "采样率：" << params->sample_rate;
     // 采样格式
-    qDebug() << params->format;
+    qDebug() << "采样格式：" << params->format;
     // 每一个样本的一个声道占用多少个字节
-    qDebug() << av_get_bytes_per_sample((AVSampleFormat) params->format);
+    qDebug() << "字节：" << av_get_bytes_per_sample((AVSampleFormat) params->format);
 }
 
 // 当线程启动的时候（start），就会自动调用run函数
@@ -75,6 +75,8 @@ void AudioThread::run() {
     // 格式上下文（将来可以利用上下文操作设备）
     AVFormatContext *ctx = nullptr;
     // 打开设备
+    AVDictionary* options = NULL;
+    av_dict_set(&options, "list_devices", "true", 0);
     int ret = avformat_open_input(&ctx, DEVICE_NAME, fmt, nullptr);
     if (ret < 0) {
         char errbuf[1024];
