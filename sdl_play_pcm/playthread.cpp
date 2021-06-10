@@ -3,7 +3,7 @@
 #include <QDebug>
 #include <QFile>
 
-#define FILENAME "F:/in.pcm"
+#define FILENAME "/Users/xuqingjia/code/video/audio_video/sdl_play_pcm/in.pcm"
 #define SAMPLE_RATE 44100
 #define SAMPLE_FORMAT AUDIO_S16LSB
 #define SAMPLE_SIZE SDL_AUDIO_BITSIZE(SAMPLE_FORMAT)

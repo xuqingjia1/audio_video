@@ -3,7 +3,7 @@
 #include <QDebug>
 #include <QFile>
 
-#define FILENAME "/Users/mj/Desktop/in.wav"
+#define FILENAME "/Users/xuqingjia/code/video/audio_video/sdl_play_wav/out.wav"
 typedef struct {
     int len = 0;
     int pullLen = 0;
@@ -30,7 +30,7 @@ void pull_audio_data(void *userData,Uint8* stream,int len) {
 
     SDL_memset(stream,0,len);
     AudioBuffer *buffer = (AudioBuffer *)userData;
-    if(buffer->len <= 0) continue;
+    if(buffer->len <= 0) return;
     buffer->pullLen = (len > buffer->len) ? buffer->len : len;
     SDL_MixAudio(stream,buffer->data,buffer->pullLen,SDL_MIX_MAXVOLUME);
     buffer->data += buffer->pullLen;
