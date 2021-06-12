@@ -23,11 +23,12 @@ AudioThread::~AudioThread() {
 
 void AudioThread::run() {
     AudioDecodeSpec out;
-    out.filename = "F:/out.pcm";
+    out.filename = "/Users/xuqingjia/code/video/out.pcm";
 
-    FFmpegs::aacDecode("F:/in.aac", out);
+    FFmpegs::aacDecode("/Users/xuqingjia/code/video/out.aac", out);
 
     qDebug() << "采样率：" << out.sampleRate;
     qDebug() << "采样格式：" << av_get_sample_fmt_name(out.sampleFmt);
     qDebug() << "声道数：" << av_get_channel_layout_nb_channels(out.chLayout);
+
 }

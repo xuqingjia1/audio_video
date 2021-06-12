@@ -27,6 +27,7 @@ void FFmpegs::resampleAudio(const char *inFilename, int inSampleRate, AVSampleFo
     int inBytesPerSample = inChs * av_get_bytes_per_sample(inSampleFmt);
     int inSamples = 1024;
     int len = 0;
+
     uint8_t **outData = nullptr;
     int outLinesize = 0;
     int outChs = av_get_channel_layout_nb_channels(outChLayout);

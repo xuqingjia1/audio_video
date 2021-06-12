@@ -27,12 +27,9 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-win32 {
-    FFMPEG_HOME = ..
-}
-
 macx {
-    FFMPEG_HOME = /usr/local/Cellar/ffmpeg/4.4_1
+    FFMPEG_HOME = /usr/local/ffmpeg
+    QMAKE_INFO_PLIST = mac/Info.plist
 }
 
 INCLUDEPATH += $${FFMPEG_HOME}/include

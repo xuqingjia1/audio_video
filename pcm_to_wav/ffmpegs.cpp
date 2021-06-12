@@ -1,6 +1,6 @@
 #include "ffmpegs.h"
 #include <QFile>
-#include<QDebug>
+#include <QDebug>
 
 FFmpegs::FFmpegs()
 {
@@ -19,7 +19,7 @@ void FFmpegs::pcm2wav(WAVHeader &header, const char *pcmFilename, const char *wa
     header.dataChunkDataSize = pcmFile.size();
     header.riffChunkDataSize = header.dataChunkDataSize + sizeof(WAVHeader) - sizeof(header.riffChunkId) - sizeof(header.riffChunkDataSize);
     QFile wavFile(wavFilename);
-    if(!wavFile.open(!QFile::WriteOnly)) {
+    if(!wavFile.open(QFile::WriteOnly)) {
         qDebug() << "文件打开失败" << wavFilename;
         pcmFile.close();
         return;

@@ -20,7 +20,7 @@ extern "C" {
 #else
     #define FMT_NAME "avfoundation"
     #define DEVICE_NAME ":0"
-    #define FILEPATH "/Users/mj/Desktop/"
+    #define FILEPATH "/Users/xuqingjia/code/video/audio_video"
 #endif
 
 AudioThread::AudioThread(QObject *parent) : QThread(parent) {

@@ -22,27 +22,27 @@ AudioThread::~AudioThread() {
 
 void AudioThread::run() {
     ResampleAudioSpec ras1;
-    ras1.filename = "F:/44100_s16le_2.pcm";
+    ras1.filename = "/Users/xuqingjia/code/video/44100_s16le_2.pcm";
     ras1.sampleFmt = AV_SAMPLE_FMT_S16;
     ras1.sampleRate = 44100;
     ras1.chLayout = AV_CH_LAYOUT_STEREO;
 
     ResampleAudioSpec ras2;
-    ras2.filename = "F:/48000_f32le_1.pcm";
+    ras2.filename = "/Users/xuqingjia/code/video/48000_f32le_1_test.pcm";
     ras2.sampleFmt = AV_SAMPLE_FMT_FLT;
     ras2.sampleRate = 48000;
     ras2.chLayout = AV_CH_LAYOUT_MONO;
 
-    ResampleAudioSpec ras3;
-    ras3.filename = "F:/48000_s32le_1.pcm";
-    ras3.sampleFmt = AV_SAMPLE_FMT_S32;
-    ras3.sampleRate = 48000;
-    ras3.chLayout = AV_CH_LAYOUT_MONO;
+//    ResampleAudioSpec ras3;
+//    ras3.filename = "F:/48000_s32le_1.pcm";
+//    ras3.sampleFmt = AV_SAMPLE_FMT_S32;
+//    ras3.sampleRate = 48000;
+//    ras3.chLayout = AV_CH_LAYOUT_MONO;
 
-    ResampleAudioSpec ras4 = ras1;
-    ras4.filename = "F:/44100_s16le_2_new.pcm";
+//    ResampleAudioSpec ras4 = ras1;
+//    ras4.filename = "F:/44100_s16le_2_new.pcm";
 
     FFmpegs::resampleAudio(ras1, ras2);
-    FFmpegs::resampleAudio(ras2, ras3);
-    FFmpegs::resampleAudio(ras3, ras4);
+//    FFmpegs::resampleAudio(ras2, ras3);
+//    FFmpegs::resampleAudio(ras3, ras4);
 }

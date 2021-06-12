@@ -26,15 +26,15 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
 macx {
-    FFMPEG_HOME = /usr/local/Cellar/ffmpeg/4.4_1
+    FFMPEG_HOME = /usr/local/ffmpeg
     QMAKE_INFO_PLIST = mac/Info.plist
 }
 
 INCLUDEPATH += $${FFMPEG_HOME}/include
 
 LIBS += -L $${FFMPEG_HOME}/lib \
-        -lavdevice \
-        -lavformat \
         -lavcodec \
         -lavutil
+

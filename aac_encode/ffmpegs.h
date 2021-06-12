@@ -1,5 +1,10 @@
 #ifndef FFMPEGS_H
 #define FFMPEGS_H
+
+extern "C" {
+#include <libavformat/avformat.h>
+}
+
 typedef struct {
     const char *filename;
     int sampleRate;

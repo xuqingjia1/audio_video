@@ -4,6 +4,8 @@
 extern "C" {
 #include <libavformat/avformat.h>
 }
+
+
 typedef struct {
     const char *filename;
     int sampleRate;

@@ -21,10 +21,10 @@ AudioThread::~AudioThread() {
 
 void AudioThread::run() {
     AudioEncodeSpec in;
-    in.filename = "F:/in.pcm";
+    in.filename = "/Users/xuqingjia/code/video/44100_s16le_2.pcm";
     in.sampleRate = 44100;
     in.sampleFmt = AV_SAMPLE_FMT_S16;
     in.chLayout = AV_CH_LAYOUT_STEREO;
 
-    FFmpegs::aacEncode(in, "F:/out.aac");
+    FFmpegs::aacEncode(in, "/Users/xuqingjia/code/video/out.aac");
 }

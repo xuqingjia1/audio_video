@@ -13,3 +13,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::on_audioButton_clicked() {
+    _audioThread = new AudioThread(this);
+    _audioThread->start();
+}

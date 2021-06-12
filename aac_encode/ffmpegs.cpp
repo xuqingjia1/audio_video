@@ -26,8 +26,8 @@ static int check_sample_fmt(const AVCodec *codec,enum AVSampleFormat sample_fmt)
     return 0;
 }
 
-static int encode(AVCodecContext *ctx,AVFrame *frame,AVPacket *pkt,QFile *outFile) {
-    int ret = avcodec_send_frame(crx,frame);
+static int encode(AVCodecContext *ctx,AVFrame *frame,AVPacket *pkt,QFile &outFile) {
+    int ret = avcodec_send_frame(ctx,frame);
     if (ret < 0) {
         ERROR_BUF(ret);
         qDebug() << "avcodec_send_frame error" << errbuf;
