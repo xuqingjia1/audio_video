@@ -111,7 +111,7 @@ void FFmpegs::h264Decode(const char *inFilename,
     AVFrame *frame = nullptr;
 
     // 获取解码器
-    //    codec = avcodec_find_decoder_by_name("h264");
+//        codec = avcodec_find_encoder_by_name("libx264");
     codec = avcodec_find_decoder(AV_CODEC_ID_H264);
     if (!codec) {
         qDebug() << "decoder not found";
@@ -125,12 +125,22 @@ void FFmpegs::h264Decode(const char *inFilename,
         return;
     }
 
+
+//    const enum AVPixelFormat *pixs = codec->pix_fmts;
+//    while (*pixs != AV_PIX_FMT_NONE) {
+//        qDebug() << pixs;
+//        pixs++;
+//    }
+
+
     // 创建上下文
     ctx = avcodec_alloc_context3(codec);
     if (!ctx) {
         qDebug() << "avcodec_alloc_context3 error";
         goto end;
     }
+
+
 
     // 创建AVPacket
     pkt = av_packet_alloc();
