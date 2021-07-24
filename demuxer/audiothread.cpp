@@ -26,12 +26,12 @@ AudioThread::~AudioThread() {
 
 void AudioThread::run() {
     AudioDecodeSpec aOut;
-    aOut.filename = "F:/res/out.pcm";
+    aOut.filename = "/Users/xuqingjia/code/video/audio_video/out.pcm";
 
     VideoDecodeSpec vOut;
-    vOut.filename = "F:/res/out.yuv";
+    vOut.filename = "/Users/xuqingjia/code/video/audio_video/out.yuv";
 
-    Demuxer().demux("F:/res/in.mp4", aOut, vOut);
+    Demuxer().demux("/Users/xuqingjia/code/video/audio_video/out.mp4", aOut, vOut);
 
     qDebug() << aOut.sampleRate
              << av_get_channel_layout_nb_channels(aOut.chLayout)
