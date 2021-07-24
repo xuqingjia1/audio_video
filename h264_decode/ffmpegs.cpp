@@ -47,14 +47,30 @@ static int decode(AVCodecContext *ctx,
 
         // 将解码后的数据写入文件
         // 写入Y平面
-        outFile.write((char *) frame->data[0],
-                      frame->linesize[0] * ctx->height);
+        //        outFile.write((char *) frame->data[0],
+        //                      frame->linesize[0] * ctx->height);
+        for (int i = 0;i < frame->height;i++) {
+            outFile.write((char *) frame->data[0] + frame->linesize[0] * i,
+                          frame->width);
+        }
+
+
         // 写入U平面
-        outFile.write((char *) frame->data[1],
-                      frame->linesize[1] * ctx->height >> 1);
+//        outFile.write((char *) frame->data[1],
+//                      frame->linesize[1] * ctx->height >> 1);
+        for (int i = 0;i < frame->height;i++) {
+            outFile.write((char *) frame->data[1] + frame->linesize[1] * i,
+                          frame->width / 2);
+        }
         // 写入V平面
-        outFile.write((char *) frame->data[2],
-                      frame->linesize[2] * ctx->height >> 1);
+//        outFile.write((char *) frame->data[2],
+//                      frame->linesize[2] * ctx->height >> 1);
+        for (int i = 0;i < frame->height;i++) {
+            outFile.write((char *) frame->data[2] + frame->linesize[2] * i,
+                          frame->width / 2);
+        }
+
+        qDebug() << "pix_fmt:" << ctx->pix_fmt;
 
 //        qDebug() << frame->data[0] << frame->data[1] << frame->data[2];
 
