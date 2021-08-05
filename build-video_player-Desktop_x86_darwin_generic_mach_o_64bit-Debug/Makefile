@@ -55,14 +55,22 @@ OBJECTS_DIR   = ./
 SOURCES       = ../video_player/condmutex.cpp \
 		../video_player/main.cpp \
 		../video_player/mainwindow.cpp \
-		../video_player/videoslider.cpp moc_mainwindow.cpp \
-		moc_videoslider.cpp
+		../video_player/videoplayer.cpp \
+		../video_player/videoslider.cpp \
+		../video_player/videowidget.cpp moc_mainwindow.cpp \
+		moc_videoplayer.cpp \
+		moc_videoslider.cpp \
+		moc_videowidget.cpp
 OBJECTS       = condmutex.o \
 		main.o \
 		mainwindow.o \
+		videoplayer.o \
 		videoslider.o \
+		videowidget.o \
 		moc_mainwindow.o \
-		moc_videoslider.o
+		moc_videoplayer.o \
+		moc_videoslider.o \
+		moc_videowidget.o
 DIST          = /usr/local/Cellar/qt/6.0.3/share/qt/mkspecs/features/spec_pre.prf \
 		/usr/local/Cellar/qt/6.0.3/share/qt/mkspecs/features/device_config.prf \
 		/usr/local/Cellar/qt/6.0.3/share/qt/mkspecs/common/unix.conf \
@@ -213,10 +221,14 @@ DIST          = /usr/local/Cellar/qt/6.0.3/share/qt/mkspecs/features/spec_pre.pr
 		/usr/local/Cellar/qt/6.0.3/share/qt/mkspecs/features/lex.prf \
 		../video_player/video_player.pro ../video_player/condmutex.h \
 		../video_player/mainwindow.h \
-		../video_player/videoslider.h ../video_player/condmutex.cpp \
+		../video_player/videoplayer.h \
+		../video_player/videoslider.h \
+		../video_player/videowidget.h ../video_player/condmutex.cpp \
 		../video_player/main.cpp \
 		../video_player/mainwindow.cpp \
-		../video_player/videoslider.cpp
+		../video_player/videoplayer.cpp \
+		../video_player/videoslider.cpp \
+		../video_player/videowidget.cpp
 QMAKE_TARGET  = video_player
 DESTDIR       = 
 TARGET        = video_player.app/Contents/MacOS/video_player
@@ -570,8 +582,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/local/Cellar/qt/6.0.3/share/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../video_player/condmutex.h ../video_player/mainwindow.h ../video_player/videoslider.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../video_player/condmutex.cpp ../video_player/main.cpp ../video_player/mainwindow.cpp ../video_player/videoslider.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../video_player/condmutex.h ../video_player/mainwindow.h ../video_player/videoplayer.h ../video_player/videoslider.h ../video_player/videowidget.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../video_player/condmutex.cpp ../video_player/main.cpp ../video_player/mainwindow.cpp ../video_player/videoplayer.cpp ../video_player/videoslider.cpp ../video_player/videowidget.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../video_player/mainwindow.ui $(DISTDIR)/
 
 
@@ -607,9 +619,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/local/Cellar/qt/6.0.3/share/qt/mkspecs/features/data/dummy.cpp
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -pipe -stdlib=libc++ -g -std=gnu++1z $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk -mmacosx-version-min=10.15 -Wall -Wextra -dM -E -o moc_predefs.h /usr/local/Cellar/qt/6.0.3/share/qt/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp moc_videoslider.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_videoplayer.cpp moc_videoslider.cpp moc_videowidget.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp moc_videoslider.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_videoplayer.cpp moc_videoslider.cpp moc_videowidget.cpp
 moc_mainwindow.cpp: ../video_player/mainwindow.h \
 		/usr/local/Cellar/qt/6.0.3/lib/QtWidgets.framework/Headers/QMainWindow \
 		/usr/local/Cellar/qt/6.0.3/lib/QtWidgets.framework/Headers/qmainwindow.h \
@@ -617,12 +629,199 @@ moc_mainwindow.cpp: ../video_player/mainwindow.h \
 		/usr/local/Cellar/qt/6.0.3/bin/moc
 	/usr/local/Cellar/qt/6.0.3/bin/moc $(DEFINES) --include /Users/xuqingjia/code/video/audio_video/build-video_player-Desktop_x86_darwin_generic_mach_o_64bit-Debug/moc_predefs.h -I/usr/local/Cellar/qt/6.0.3/share/qt/mkspecs/macx-clang -I/Users/xuqingjia/code/video/audio_video/video_player -I/usr/local/Cellar/sdl2/2.0.14_1/include -I/usr/local/ffmpeg/include -I/usr/local/Cellar/qt/6.0.3/lib/QtWidgets.framework/Headers -I/usr/local/Cellar/qt/6.0.3/lib/QtGui.framework/Headers -I/usr/local/Cellar/qt/6.0.3/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/usr/local/Cellar/qt/6.0.3/lib ../video_player/mainwindow.h -o moc_mainwindow.cpp
 
+moc_videoplayer.cpp: ../video_player/videoplayer.h \
+		/usr/local/Cellar/qt/6.0.3/lib/QtCore.framework/Headers/QObject \
+		/usr/local/Cellar/qt/6.0.3/lib/QtCore.framework/Headers/qobject.h \
+		../video_player/condmutex.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_main.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_stdinc.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_config.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_platform.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/begin_code.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/close_code.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_assert.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_atomic.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_audio.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_error.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_endian.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_mutex.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_thread.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_rwops.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_clipboard.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_cpuinfo.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_events.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_video.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_pixels.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_rect.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_surface.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_blendmode.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_keyboard.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_keycode.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_scancode.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_mouse.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_joystick.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_gamecontroller.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_sensor.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_quit.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_gesture.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_touch.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_filesystem.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_haptic.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_hints.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_loadso.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_log.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_messagebox.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_metal.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_power.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_render.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_shape.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_system.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_timer.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_version.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_locale.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_misc.h \
+		/usr/local/ffmpeg/include/libavcodec/avcodec.h \
+		/usr/local/ffmpeg/include/libavutil/samplefmt.h \
+		/usr/local/ffmpeg/include/libavutil/avutil.h \
+		/usr/local/ffmpeg/include/libavutil/common.h \
+		/usr/local/ffmpeg/include/libavutil/attributes.h \
+		/usr/local/ffmpeg/include/libavutil/macros.h \
+		/usr/local/ffmpeg/include/libavutil/version.h \
+		/usr/local/ffmpeg/include/libavutil/avconfig.h \
+		/usr/local/ffmpeg/include/libavutil/mem.h \
+		/usr/local/ffmpeg/include/libavutil/error.h \
+		/usr/local/ffmpeg/include/libavutil/rational.h \
+		/usr/local/ffmpeg/include/libavutil/mathematics.h \
+		/usr/local/ffmpeg/include/libavutil/intfloat.h \
+		/usr/local/ffmpeg/include/libavutil/log.h \
+		/usr/local/ffmpeg/include/libavutil/pixfmt.h \
+		/usr/local/ffmpeg/include/libavutil/buffer.h \
+		/usr/local/ffmpeg/include/libavutil/cpu.h \
+		/usr/local/ffmpeg/include/libavutil/channel_layout.h \
+		/usr/local/ffmpeg/include/libavutil/dict.h \
+		/usr/local/ffmpeg/include/libavutil/frame.h \
+		/usr/local/ffmpeg/include/libavutil/hwcontext.h \
+		/usr/local/ffmpeg/include/libavcodec/bsf.h \
+		/usr/local/ffmpeg/include/libavcodec/codec_id.h \
+		/usr/local/ffmpeg/include/libavcodec/codec_par.h \
+		/usr/local/ffmpeg/include/libavcodec/packet.h \
+		/usr/local/ffmpeg/include/libavcodec/version.h \
+		/usr/local/ffmpeg/include/libavcodec/codec.h \
+		/usr/local/ffmpeg/include/libavcodec/codec_desc.h \
+		/usr/local/ffmpeg/include/libavformat/avformat.h \
+		/usr/local/ffmpeg/include/libavformat/avio.h \
+		/usr/local/ffmpeg/include/libavformat/version.h \
+		/usr/local/ffmpeg/include/libswresample/swresample.h \
+		/usr/local/ffmpeg/include/libswresample/version.h \
+		/usr/local/ffmpeg/include/libswscale/swscale.h \
+		/usr/local/ffmpeg/include/libswscale/version.h \
+		moc_predefs.h \
+		/usr/local/Cellar/qt/6.0.3/bin/moc
+	/usr/local/Cellar/qt/6.0.3/bin/moc $(DEFINES) --include /Users/xuqingjia/code/video/audio_video/build-video_player-Desktop_x86_darwin_generic_mach_o_64bit-Debug/moc_predefs.h -I/usr/local/Cellar/qt/6.0.3/share/qt/mkspecs/macx-clang -I/Users/xuqingjia/code/video/audio_video/video_player -I/usr/local/Cellar/sdl2/2.0.14_1/include -I/usr/local/ffmpeg/include -I/usr/local/Cellar/qt/6.0.3/lib/QtWidgets.framework/Headers -I/usr/local/Cellar/qt/6.0.3/lib/QtGui.framework/Headers -I/usr/local/Cellar/qt/6.0.3/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/usr/local/Cellar/qt/6.0.3/lib ../video_player/videoplayer.h -o moc_videoplayer.cpp
+
 moc_videoslider.cpp: ../video_player/videoslider.h \
 		/usr/local/Cellar/qt/6.0.3/lib/QtWidgets.framework/Headers/QSlider \
 		/usr/local/Cellar/qt/6.0.3/lib/QtWidgets.framework/Headers/qslider.h \
 		moc_predefs.h \
 		/usr/local/Cellar/qt/6.0.3/bin/moc
 	/usr/local/Cellar/qt/6.0.3/bin/moc $(DEFINES) --include /Users/xuqingjia/code/video/audio_video/build-video_player-Desktop_x86_darwin_generic_mach_o_64bit-Debug/moc_predefs.h -I/usr/local/Cellar/qt/6.0.3/share/qt/mkspecs/macx-clang -I/Users/xuqingjia/code/video/audio_video/video_player -I/usr/local/Cellar/sdl2/2.0.14_1/include -I/usr/local/ffmpeg/include -I/usr/local/Cellar/qt/6.0.3/lib/QtWidgets.framework/Headers -I/usr/local/Cellar/qt/6.0.3/lib/QtGui.framework/Headers -I/usr/local/Cellar/qt/6.0.3/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/usr/local/Cellar/qt/6.0.3/lib ../video_player/videoslider.h -o moc_videoslider.cpp
+
+moc_videowidget.cpp: ../video_player/videowidget.h \
+		/usr/local/Cellar/qt/6.0.3/lib/QtWidgets.framework/Headers/QWidget \
+		/usr/local/Cellar/qt/6.0.3/lib/QtWidgets.framework/Headers/qwidget.h \
+		/usr/local/Cellar/qt/6.0.3/lib/QtGui.framework/Headers/QImage \
+		/usr/local/Cellar/qt/6.0.3/lib/QtGui.framework/Headers/qimage.h \
+		../video_player/videoplayer.h \
+		/usr/local/Cellar/qt/6.0.3/lib/QtCore.framework/Headers/QObject \
+		/usr/local/Cellar/qt/6.0.3/lib/QtCore.framework/Headers/qobject.h \
+		../video_player/condmutex.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_main.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_stdinc.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_config.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_platform.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/begin_code.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/close_code.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_assert.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_atomic.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_audio.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_error.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_endian.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_mutex.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_thread.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_rwops.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_clipboard.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_cpuinfo.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_events.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_video.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_pixels.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_rect.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_surface.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_blendmode.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_keyboard.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_keycode.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_scancode.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_mouse.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_joystick.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_gamecontroller.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_sensor.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_quit.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_gesture.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_touch.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_filesystem.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_haptic.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_hints.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_loadso.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_log.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_messagebox.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_metal.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_power.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_render.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_shape.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_system.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_timer.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_version.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_locale.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_misc.h \
+		/usr/local/ffmpeg/include/libavcodec/avcodec.h \
+		/usr/local/ffmpeg/include/libavutil/samplefmt.h \
+		/usr/local/ffmpeg/include/libavutil/avutil.h \
+		/usr/local/ffmpeg/include/libavutil/common.h \
+		/usr/local/ffmpeg/include/libavutil/attributes.h \
+		/usr/local/ffmpeg/include/libavutil/macros.h \
+		/usr/local/ffmpeg/include/libavutil/version.h \
+		/usr/local/ffmpeg/include/libavutil/avconfig.h \
+		/usr/local/ffmpeg/include/libavutil/mem.h \
+		/usr/local/ffmpeg/include/libavutil/error.h \
+		/usr/local/ffmpeg/include/libavutil/rational.h \
+		/usr/local/ffmpeg/include/libavutil/mathematics.h \
+		/usr/local/ffmpeg/include/libavutil/intfloat.h \
+		/usr/local/ffmpeg/include/libavutil/log.h \
+		/usr/local/ffmpeg/include/libavutil/pixfmt.h \
+		/usr/local/ffmpeg/include/libavutil/buffer.h \
+		/usr/local/ffmpeg/include/libavutil/cpu.h \
+		/usr/local/ffmpeg/include/libavutil/channel_layout.h \
+		/usr/local/ffmpeg/include/libavutil/dict.h \
+		/usr/local/ffmpeg/include/libavutil/frame.h \
+		/usr/local/ffmpeg/include/libavutil/hwcontext.h \
+		/usr/local/ffmpeg/include/libavcodec/bsf.h \
+		/usr/local/ffmpeg/include/libavcodec/codec_id.h \
+		/usr/local/ffmpeg/include/libavcodec/codec_par.h \
+		/usr/local/ffmpeg/include/libavcodec/packet.h \
+		/usr/local/ffmpeg/include/libavcodec/version.h \
+		/usr/local/ffmpeg/include/libavcodec/codec.h \
+		/usr/local/ffmpeg/include/libavcodec/codec_desc.h \
+		/usr/local/ffmpeg/include/libavformat/avformat.h \
+		/usr/local/ffmpeg/include/libavformat/avio.h \
+		/usr/local/ffmpeg/include/libavformat/version.h \
+		/usr/local/ffmpeg/include/libswresample/swresample.h \
+		/usr/local/ffmpeg/include/libswresample/version.h \
+		/usr/local/ffmpeg/include/libswscale/swscale.h \
+		/usr/local/ffmpeg/include/libswscale/version.h \
+		moc_predefs.h \
+		/usr/local/Cellar/qt/6.0.3/bin/moc
+	/usr/local/Cellar/qt/6.0.3/bin/moc $(DEFINES) --include /Users/xuqingjia/code/video/audio_video/build-video_player-Desktop_x86_darwin_generic_mach_o_64bit-Debug/moc_predefs.h -I/usr/local/Cellar/qt/6.0.3/share/qt/mkspecs/macx-clang -I/Users/xuqingjia/code/video/audio_video/video_player -I/usr/local/Cellar/sdl2/2.0.14_1/include -I/usr/local/ffmpeg/include -I/usr/local/Cellar/qt/6.0.3/lib/QtWidgets.framework/Headers -I/usr/local/Cellar/qt/6.0.3/lib/QtGui.framework/Headers -I/usr/local/Cellar/qt/6.0.3/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.0/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/usr/local/Cellar/qt/6.0.3/lib ../video_player/videowidget.h -o moc_videowidget.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -711,8 +910,100 @@ main.o: ../video_player/main.cpp ../video_player/mainwindow.h \
 mainwindow.o: ../video_player/mainwindow.cpp ../video_player/mainwindow.h \
 		/usr/local/Cellar/qt/6.0.3/lib/QtWidgets.framework/Headers/QMainWindow \
 		/usr/local/Cellar/qt/6.0.3/lib/QtWidgets.framework/Headers/qmainwindow.h \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		../video_player/videoslider.h \
+		/usr/local/Cellar/qt/6.0.3/lib/QtWidgets.framework/Headers/QSlider \
+		/usr/local/Cellar/qt/6.0.3/lib/QtWidgets.framework/Headers/qslider.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../video_player/mainwindow.cpp
+
+videoplayer.o: ../video_player/videoplayer.cpp ../video_player/videoplayer.h \
+		/usr/local/Cellar/qt/6.0.3/lib/QtCore.framework/Headers/QObject \
+		/usr/local/Cellar/qt/6.0.3/lib/QtCore.framework/Headers/qobject.h \
+		../video_player/condmutex.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_main.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_stdinc.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_config.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_platform.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/begin_code.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/close_code.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_assert.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_atomic.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_audio.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_error.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_endian.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_mutex.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_thread.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_rwops.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_clipboard.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_cpuinfo.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_events.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_video.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_pixels.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_rect.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_surface.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_blendmode.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_keyboard.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_keycode.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_scancode.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_mouse.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_joystick.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_gamecontroller.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_sensor.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_quit.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_gesture.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_touch.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_filesystem.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_haptic.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_hints.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_loadso.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_log.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_messagebox.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_metal.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_power.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_render.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_shape.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_system.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_timer.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_version.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_locale.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_misc.h \
+		/usr/local/ffmpeg/include/libavcodec/avcodec.h \
+		/usr/local/ffmpeg/include/libavutil/samplefmt.h \
+		/usr/local/ffmpeg/include/libavutil/avutil.h \
+		/usr/local/ffmpeg/include/libavutil/common.h \
+		/usr/local/ffmpeg/include/libavutil/attributes.h \
+		/usr/local/ffmpeg/include/libavutil/macros.h \
+		/usr/local/ffmpeg/include/libavutil/version.h \
+		/usr/local/ffmpeg/include/libavutil/avconfig.h \
+		/usr/local/ffmpeg/include/libavutil/mem.h \
+		/usr/local/ffmpeg/include/libavutil/error.h \
+		/usr/local/ffmpeg/include/libavutil/rational.h \
+		/usr/local/ffmpeg/include/libavutil/mathematics.h \
+		/usr/local/ffmpeg/include/libavutil/intfloat.h \
+		/usr/local/ffmpeg/include/libavutil/log.h \
+		/usr/local/ffmpeg/include/libavutil/pixfmt.h \
+		/usr/local/ffmpeg/include/libavutil/buffer.h \
+		/usr/local/ffmpeg/include/libavutil/cpu.h \
+		/usr/local/ffmpeg/include/libavutil/channel_layout.h \
+		/usr/local/ffmpeg/include/libavutil/dict.h \
+		/usr/local/ffmpeg/include/libavutil/frame.h \
+		/usr/local/ffmpeg/include/libavutil/hwcontext.h \
+		/usr/local/ffmpeg/include/libavcodec/bsf.h \
+		/usr/local/ffmpeg/include/libavcodec/codec_id.h \
+		/usr/local/ffmpeg/include/libavcodec/codec_par.h \
+		/usr/local/ffmpeg/include/libavcodec/packet.h \
+		/usr/local/ffmpeg/include/libavcodec/version.h \
+		/usr/local/ffmpeg/include/libavcodec/codec.h \
+		/usr/local/ffmpeg/include/libavcodec/codec_desc.h \
+		/usr/local/ffmpeg/include/libavformat/avformat.h \
+		/usr/local/ffmpeg/include/libavformat/avio.h \
+		/usr/local/ffmpeg/include/libavformat/version.h \
+		/usr/local/ffmpeg/include/libswresample/swresample.h \
+		/usr/local/ffmpeg/include/libswresample/version.h \
+		/usr/local/ffmpeg/include/libswscale/swscale.h \
+		/usr/local/ffmpeg/include/libswscale/version.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o videoplayer.o ../video_player/videoplayer.cpp
 
 videoslider.o: ../video_player/videoslider.cpp ../video_player/videoslider.h \
 		/usr/local/Cellar/qt/6.0.3/lib/QtWidgets.framework/Headers/QSlider \
@@ -723,11 +1014,115 @@ videoslider.o: ../video_player/videoslider.cpp ../video_player/videoslider.h \
 		/usr/local/Cellar/qt/6.0.3/lib/QtWidgets.framework/Headers/qstyle.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o videoslider.o ../video_player/videoslider.cpp
 
+videowidget.o: ../video_player/videowidget.cpp ../video_player/videowidget.h \
+		/usr/local/Cellar/qt/6.0.3/lib/QtWidgets.framework/Headers/QWidget \
+		/usr/local/Cellar/qt/6.0.3/lib/QtWidgets.framework/Headers/qwidget.h \
+		/usr/local/Cellar/qt/6.0.3/lib/QtGui.framework/Headers/QImage \
+		/usr/local/Cellar/qt/6.0.3/lib/QtGui.framework/Headers/qimage.h \
+		../video_player/videoplayer.h \
+		/usr/local/Cellar/qt/6.0.3/lib/QtCore.framework/Headers/QObject \
+		/usr/local/Cellar/qt/6.0.3/lib/QtCore.framework/Headers/qobject.h \
+		../video_player/condmutex.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_main.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_stdinc.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_config.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_platform.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/begin_code.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/close_code.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_assert.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_atomic.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_audio.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_error.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_endian.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_mutex.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_thread.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_rwops.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_clipboard.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_cpuinfo.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_events.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_video.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_pixels.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_rect.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_surface.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_blendmode.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_keyboard.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_keycode.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_scancode.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_mouse.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_joystick.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_gamecontroller.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_sensor.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_quit.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_gesture.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_touch.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_filesystem.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_haptic.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_hints.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_loadso.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_log.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_messagebox.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_metal.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_power.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_render.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_shape.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_system.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_timer.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_version.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_locale.h \
+		/usr/local/Cellar/sdl2/2.0.14_1/include/SDL2/SDL_misc.h \
+		/usr/local/ffmpeg/include/libavcodec/avcodec.h \
+		/usr/local/ffmpeg/include/libavutil/samplefmt.h \
+		/usr/local/ffmpeg/include/libavutil/avutil.h \
+		/usr/local/ffmpeg/include/libavutil/common.h \
+		/usr/local/ffmpeg/include/libavutil/attributes.h \
+		/usr/local/ffmpeg/include/libavutil/macros.h \
+		/usr/local/ffmpeg/include/libavutil/version.h \
+		/usr/local/ffmpeg/include/libavutil/avconfig.h \
+		/usr/local/ffmpeg/include/libavutil/mem.h \
+		/usr/local/ffmpeg/include/libavutil/error.h \
+		/usr/local/ffmpeg/include/libavutil/rational.h \
+		/usr/local/ffmpeg/include/libavutil/mathematics.h \
+		/usr/local/ffmpeg/include/libavutil/intfloat.h \
+		/usr/local/ffmpeg/include/libavutil/log.h \
+		/usr/local/ffmpeg/include/libavutil/pixfmt.h \
+		/usr/local/ffmpeg/include/libavutil/buffer.h \
+		/usr/local/ffmpeg/include/libavutil/cpu.h \
+		/usr/local/ffmpeg/include/libavutil/channel_layout.h \
+		/usr/local/ffmpeg/include/libavutil/dict.h \
+		/usr/local/ffmpeg/include/libavutil/frame.h \
+		/usr/local/ffmpeg/include/libavutil/hwcontext.h \
+		/usr/local/ffmpeg/include/libavcodec/bsf.h \
+		/usr/local/ffmpeg/include/libavcodec/codec_id.h \
+		/usr/local/ffmpeg/include/libavcodec/codec_par.h \
+		/usr/local/ffmpeg/include/libavcodec/packet.h \
+		/usr/local/ffmpeg/include/libavcodec/version.h \
+		/usr/local/ffmpeg/include/libavcodec/codec.h \
+		/usr/local/ffmpeg/include/libavcodec/codec_desc.h \
+		/usr/local/ffmpeg/include/libavformat/avformat.h \
+		/usr/local/ffmpeg/include/libavformat/avio.h \
+		/usr/local/ffmpeg/include/libavformat/version.h \
+		/usr/local/ffmpeg/include/libswresample/swresample.h \
+		/usr/local/ffmpeg/include/libswresample/version.h \
+		/usr/local/ffmpeg/include/libswscale/swscale.h \
+		/usr/local/ffmpeg/include/libswscale/version.h \
+		/usr/local/Cellar/qt/6.0.3/lib/QtCore.framework/Headers/QDebug \
+		/usr/local/Cellar/qt/6.0.3/lib/QtCore.framework/Headers/qdebug.h \
+		/usr/local/Cellar/qt/6.0.3/lib/QtGui.framework/Headers/QPainter \
+		/usr/local/Cellar/qt/6.0.3/lib/QtGui.framework/Headers/qpainter.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o videowidget.o ../video_player/videowidget.cpp
+
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
 
+moc_videoplayer.o: moc_videoplayer.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_videoplayer.o moc_videoplayer.cpp
+
 moc_videoslider.o: moc_videoslider.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_videoslider.o moc_videoslider.cpp
+
+moc_videowidget.o: moc_videowidget.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_videowidget.o moc_videowidget.cpp
 
 ####### Install
 
