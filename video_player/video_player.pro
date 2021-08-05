@@ -9,11 +9,17 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    condmutex.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    videoslider.cpp \
+    videowidget.cpp
 
 HEADERS += \
-    mainwindow.h
+    condmutex.h \
+    mainwindow.h \
+    videoslider.h \
+    videowidget.h
 
 FORMS += \
     mainwindow.ui
@@ -22,3 +28,27 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+
+macx {
+    FFMPEG_HOME = /usr/local/ffmpeg
+#    FFMPEG_HOME = /usr/local/Cellar/ffmpeg/4.4
+    QMAKE_INFO_PLIST = mac/Info.plist
+    SDL_HOME = /usr/local/Cellar/sdl2/2.0.14_1
+}
+
+INCLUDEPATH += $${SDL_HOME}/include
+
+LIBS += -L$${SDL_HOME}/lib \
+        -lSDL2
+
+
+INCLUDEPATH += $${FFMPEG_HOME}/include
+
+LIBS += -L$${FFMPEG_HOME}/lib \
+        -lavcodec \
+        -lavformat \
+        -lavutil \
+        -lswresample \
+        -lswscale
+

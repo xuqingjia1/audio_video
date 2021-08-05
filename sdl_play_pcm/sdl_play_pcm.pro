@@ -25,15 +25,39 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-win32 {
-    SDL_HOME = F:/Dev/SDL2-2.0.14/x86_64-w64-mingw32
-}
+#win32 {
+#    SDL_HOME = F:/Dev/SDL2-2.0.14/x86_64-w64-mingw32
+#}
+
+#mac {
+#    SDL_HOME = /usr/local/Cellar/sdl2/2.0.14_1
+#}
+
+#INCLUDEPATH += $${SDL_HOME}/include
+
+#LIBS += -L $${SDL_HOME}/lib \
+#        -lSDL2
+
 
 mac {
+    FFMPEG_HOME = /usr/local/ffmpeg
+    QMAKE_INFO_PLIST = mac/Info.plist
     SDL_HOME = /usr/local/Cellar/sdl2/2.0.14_1
 }
 
+INCLUDEPATH += $${FFMPEG_HOME}/include
 INCLUDEPATH += $${SDL_HOME}/include
+
+
+
+LIBS += -L $${FFMPEG_HOME}/lib \
+        -lavcodec \
+        -lavformat \
+        -lavutil \
+        -lswresample \
+        -lswscale
+
 
 LIBS += -L $${SDL_HOME}/lib \
         -lSDL2
+
