@@ -75,7 +75,11 @@ public:
 
 
 signals:
-
+    void stateChanged(VideoPlayer *player);
+    void timeChanged(VideoPlayer *player);
+    void initFinished(VideoPlayer *player);
+    void playFailed(VideoPlayer *player);
+    void frameDecoded(VideoPlayer *player,uint8_t *data,VideoSwsSpec &spec);
 
 private:
     typedef struct {
@@ -86,6 +90,7 @@ private:
         int bytesPerSampleFrame;
     }AudioSwrSpec;
 
+    AVCodecContext *_aDecodeCtx = nullptr;
 
 };
 
