@@ -119,7 +119,7 @@ private:
     AVStream *_vStream = nullptr;
     AVFrame *_vSwsInFrame = nullptr, *_vSwsOutFrame = nullptr;
     SwsContext *_vSwsCtx = nullptr;
-    VideoSwsSpec _vSwsOutSpwc;
+    VideoSwsSpec _vSwsOutSpec;
     std::list<AVPacket> _vPktList;
     CondMutex _vMutex;
     double _vTime = 0;
