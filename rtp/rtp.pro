@@ -12,4 +12,7 @@ HEADERS += \
     h264-util.h \
     rtp-header.h \
     rtp-packet.h \
+    rtp-param.h \
+    rtp-payload-internal.h \
+    rtp-payload.h \
     rtp-util.h
