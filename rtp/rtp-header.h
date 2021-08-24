@@ -2,6 +2,8 @@
 #define RTPHEADER_H
 
 #include <stdint.h>
+#define RTP_VERSION 2
+
 
 typedef struct _rtp_header_t {
     uint32_t v:2;

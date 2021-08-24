@@ -6,7 +6,10 @@ CONFIG -= qt
 SOURCES += \
         h264-util.c \
         main.c \
-        rtp-packet.c
+        rtp-h264-pack.c \
+        rtp-h264-unpack.c \
+        rtp-packet.c \
+        rtp-payload.c
 
 HEADERS += \
     h264-util.h \
