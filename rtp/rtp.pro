@@ -12,10 +12,13 @@ SOURCES += \
         rtp-payload.c
 
 HEADERS += \
+    aac-util.h \
     h264-util.h \
     rtp-header.h \
     rtp-packet.h \
     rtp-param.h \
+    rtp-payload-helper.h \
     rtp-payload-internal.h \
     rtp-payload.h \
+    rtp-profile.h \
     rtp-util.h
