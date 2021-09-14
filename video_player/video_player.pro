@@ -13,6 +13,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     videoplayer.cpp \
+    videoplayer_audio.cpp \
+    videoplayer_video.cpp \
     videoslider.cpp \
     videowidget.cpp
 
@@ -33,9 +35,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 
 macx {
-    FFMPEG_HOME = /usr/local/ffmpeg
-#    FFMPEG_HOME = /usr/local/Cellar/ffmpeg/4.4
-    QMAKE_INFO_PLIST = mac/Info.plist
+#    FFMPEG_HOME = /usr/local/ffmpeg
+    FFMPEG_HOME = /usr/local/Cellar/ffmpeg/4.4_1
+#    QMAKE_INFO_PLIST = mac/Info.plist
     SDL_HOME = /usr/local/Cellar/sdl2/2.0.14_1
 }
 
