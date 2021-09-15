@@ -403,6 +403,8 @@ static int write_audio_frame(AVFormatContext *oc,OutputStream *ost) {
     int dst_nb_samples;
     av_init_packet(&pkt);
     codec_ctx = ost->enc;
+    frame = get_audio_frame(ost);
+
     if(frame) {
         dst_nb_samples = av_rescale_rnd(swr_get_delay(ost->swr_ctx, codec_ctx->sample_rate) + frame->nb_samples,
                                         codec_ctx->sample_rate, codec_ctx->sample_rate, AV_ROUND_UP);
