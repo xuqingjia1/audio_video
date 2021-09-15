@@ -343,6 +343,8 @@ static int write_video_frame(AVFormatContext *oc,OutputStream *ost) {
     int got_packet = 0;
     AVPacket *pkt = {0};
     codec_ctx = ost->enc;
+    frame = get_video_frame(ost);
+
     av_init_packet(&pkt);
     ret = avcodec_encode_video2(codec_ctx,&pkt,frame,&got_packet);
     if (ret < 0)
