@@ -5,17 +5,20 @@ CONFIG -= qt
 
 SOURCES += \
         audioencoder.cpp \
+        audioresampler.cpp \
         main.cpp \
         muxer.cpp \
         videoencoder.cpp
 
 HEADERS += \
     audioencoder.h \
+    audioresampler.h \
     muxer.h \
     videoencoder.h
 
 macx {
-    FFMPEG_HOME = /usr/local/Cellar/ffmpeg/4.4_1
+#    FFMPEG_HOME = /usr/local/Cellar/ffmpeg/4.4_1
+    FFMPEG_HOME = /usr/local/ffmpeg
 }
 INCLUDEPATH += $${FFMPEG_HOME}/include
 

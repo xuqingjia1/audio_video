@@ -113,3 +113,61 @@ AVPacket *VideoEncoder::Encode(uint8_t *yuv_data, int yuv_size, int stream_index
     packet->stream_index = stream_index;
     return packet;
 }
+
+int VideoEncoder::Encode(uint8_t *yuv_data, int yuv_size,
+                         int stream_index, int64_t pts, int64_t time_base,
+                         std::vector<AVPacket *> &packets)
+{
+    if(!codec_ctx_) {
+        printf("codec_ctx_ null\n");
+        return -1;
+    }
+    int ret = 0;
+
+    pts = av_rescale_q(pts, AVRational{1, (int)time_base}, codec_ctx_->time_base);
+    frame_->pts = pts;
+    if(yuv_data) {
+        int ret_size = av_image_fill_arrays(frame_->data, frame_->linesize,
+                                            yuv_data, (AVPixelFormat)frame_->format,
+                                            frame_->width, frame_->height, 1);
+        if(ret_size != yuv_size) {
+            printf("ret_size:%d != yuv_size:%d -> failed\n", ret_size, yuv_size);
+            return -1;
+        }
+        ret = avcodec_send_frame(codec_ctx_, frame_);
+    } else {
+        ret = avcodec_send_frame(codec_ctx_, NULL);
+    }
+
+    if(ret != 0) {
+        char errbuf[1024] = {0};
+        av_strerror(ret, errbuf, sizeof(errbuf) - 1);
+        printf("avcodec_send_frame failed:%s\n", errbuf);
+        return -1;
+    }
+    while(1)
+    {
+        AVPacket *packet = av_packet_alloc();
+        ret = avcodec_receive_packet(codec_ctx_, packet);
+        packet->stream_index = stream_index;
+        if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF) {
+            ret = 0;
+            av_packet_free(&packet);
+            break;
+        } else if (ret < 0) {
+            char errbuf[1024] = {0};
+            av_strerror(ret, errbuf, sizeof(errbuf) - 1);
+            printf("h264 avcodec_receive_packet failed:%s\n", errbuf);
+            av_packet_free(&packet);
+            ret = -1;
+        }
+        printf("h264 pts:%lld\n", packet->pts);
+        packets.push_back(packet);
+    }
+    return ret;
+}
+
+AVCodecContext *VideoEncoder::GetCodecContext()
+{
+    return codec_ctx_;
+}

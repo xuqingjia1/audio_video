@@ -78,6 +78,50 @@ AVPacket *AudioEncoder::Encode(AVFrame *frame, int stream_index, int64_t pts, in
     return packet;
 }
 
+
+
+
+
+
+int AudioEncoder::Encode(AVFrame *frame, int stream_index, int64_t pts, int64_t time_base,
+                         std::vector<AVPacket *> &packets) {
+    if(!codec_ctx_) {
+        printf("codec_ctx_ null\n");
+        return NULL;
+    }
+    pts = av_rescale_q(pts, AVRational{1, (int)time_base}, codec_ctx_->time_base);
+    if(frame) {
+        frame->pts = pts;
+    }
+    int ret = avcodec_send_frame(codec_ctx_, frame);
+    if(ret != 0) {
+        char errbuf[1024] = {0};
+        av_strerror(ret, errbuf, sizeof(errbuf) - 1);
+        printf("avcodec_send_frame failed:%s\n", errbuf);
+        return NULL;
+    }
+    while(1)
+    {
+        AVPacket *packet = av_packet_alloc();
+        ret = avcodec_receive_packet(codec_ctx_, packet);
+        packet->stream_index = stream_index;
+        if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF) {
+            ret = 0;
+            av_packet_free(&packet);
+            break;
+        } else if (ret < 0) {
+            char errbuf[1024] = {0};
+            av_strerror(ret, errbuf, sizeof(errbuf) - 1);
+            printf("aac avcodec_receive_packet failed:%s\n", errbuf);
+            av_packet_free(&packet);
+            ret = -1;
+        }
+        packets.push_back(packet);
+    }
+    return ret;
+}
+
+
 int AudioEncoder::GetFrameSize()
 {
     if(codec_ctx_)
@@ -91,4 +135,25 @@ int AudioEncoder::GetSampleFormat()
         return codec_ctx_->sample_fmt;
 
     return -1;  // AV_SAMPLE_FMT_NONE
+}
+AVCodecContext *AudioEncoder::GetCodecContext()
+{
+    return codec_ctx_;
+}
+
+int AudioEncoder::GetChannels()
+{
+    if(codec_ctx_)
+        return codec_ctx_->channels;
+
+    return -1;
+}
+
+
+int AudioEncoder::GetSampleRate()
+{
+    if(codec_ctx_)
+        return codec_ctx_->sample_rate;
+
+    return -1;
 }

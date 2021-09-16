@@ -16,6 +16,11 @@ public:
     int InitH264(int width,int height,int fps,int bit_rate);
     void DeInit();
     AVPacket *Encode(uint8_t *yuv_data,int yuv_size,int stream_index,int64_t pts,int64_t time_base);
+    // 小于0没有packet
+    int Encode(uint8_t *yuv_data, int yuv_size, int stream_index, int64_t pts, int64_t time_base,
+               std::vector<AVPacket *> &packets);
+    AVCodecContext *GetCodecContext();
+
 private:
     int width_ = 0;
     int height_ = 0;
