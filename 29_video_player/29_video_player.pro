@@ -41,8 +41,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 macx {
-    FFMPEG_HOME = /usr/local/ffmpeg
-#    FFMPEG_HOME = /usr/local/Cellar/ffmpeg/4.4
+#    FFMPEG_HOME = /usr/local/ffmpeg
+    FFMPEG_HOME = /usr/local/Cellar/ffmpeg/4.4_1
     QMAKE_INFO_PLIST = mac/Info.plist
     SDL_HOME = /usr/local/Cellar/sdl2/2.0.14_1
 }
