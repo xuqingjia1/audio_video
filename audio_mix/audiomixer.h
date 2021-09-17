@@ -47,7 +47,7 @@ private:
         AVFilterContext *filterCtx;
     };
 
-    bool initialized = false;
+    bool initialized_ = false;
     std::mutex mutex_;
     std::map<uint32_t, AudioInfo> audio_input_info_;
     std::shared_ptr<AudioInfo> audio_output_info_;
