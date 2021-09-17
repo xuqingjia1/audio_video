@@ -17,8 +17,8 @@ HEADERS += \
     videoencoder.h
 
 macx {
-#    FFMPEG_HOME = /usr/local/Cellar/ffmpeg/4.4_1
-    FFMPEG_HOME = /usr/local/ffmpeg
+    FFMPEG_HOME = /usr/local/Cellar/ffmpeg/4.4_1
+#    FFMPEG_HOME = /usr/local/ffmpeg
 }
 INCLUDEPATH += $${FFMPEG_HOME}/include
 
