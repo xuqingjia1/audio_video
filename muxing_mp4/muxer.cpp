@@ -63,6 +63,18 @@ int Muxer::AddStream(AVCodecContext *codec_ctx) {
     return 0;
 }
 
+int Muxer::Open()
+{
+    int ret = avio_open(&fmt_ctx_->pb, url_.c_str(), AVIO_FLAG_WRITE);
+    if(ret < 0) {
+        char errbuf[1024] = {0};
+        av_strerror(ret, errbuf, sizeof(errbuf) - 1);
+        printf("avio_open %s failed:%s\n",url_.c_str(), errbuf);
+        return -1;
+    }
+    return 0;
+}
+
 int Muxer::SendHeader() {
     if(!fmt_ctx_) {
         printf("fmt ctx is NULL\n");
@@ -131,4 +143,14 @@ int Muxer::SendTrailer()
         return -1;
     }
     return 0;
+}
+int Muxer::GetAudioStreamIndex()
+{
+    return audio_index_;
+}
+
+
+int Muxer::GetVideoStreamIndex()
+{
+    return video_index_;
 }

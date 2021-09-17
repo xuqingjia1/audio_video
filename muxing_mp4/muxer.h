@@ -22,6 +22,8 @@ public:
     int SendPacket(AVPacket *packet);
     int SendTrailer();
     int Open();
+    int GetAudioStreamIndex();
+    int GetVideoStreamIndex();
 
 private:
     AVFormatContext *fmt_ctx_ = NULL;
