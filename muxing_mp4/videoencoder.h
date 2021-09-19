@@ -1,11 +1,11 @@
 #ifndef VIDEOENCODER_H
 #define VIDEOENCODER_H
-
 extern "C"
 {
-#include <libavformat/avformat.h>
-#include <libavcodec/avcodec.h>
+#include "libavformat/avformat.h"
+#include "libavcodec/avcodec.h"
 }
+#include <vector>
 
 
 class VideoEncoder

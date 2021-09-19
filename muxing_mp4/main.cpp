@@ -8,14 +8,14 @@ using namespace std;
 
 
 
-#define YUV_WIDTH 720
-#define YUV_HEIGHT 576
+#define YUV_WIDTH 1280
+#define YUV_HEIGHT 720
 #define YUV_FPS  25
 
 #define VIDEO_BIT_RATE 500*1024
 
 #define PCM_SAMPLE_FORMAT AV_SAMPLE_FMT_S16
-#define PCM_SAMPLE_RATE 44100
+#define PCM_SAMPLE_RATE 48000
 #define PCM_CHANNELS 2
 
 #define AUDIO_BIT_RATE 128*1024
@@ -25,14 +25,17 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-    if(argc != 4) {
-        printf("usage -> exe in.yuv in.pcm out.mp4");
-        return -1;
-    }
+//    if(argc != 4) {
+//        printf("usage -> exe in.yuv in.pcm out.mp4");
+//        return -1;
+//    }
     // 1. 打开yuv pcm文件
-    char *in_yuv_name = argv[1];
-    char *in_pcm_name = argv[2];
-    char *out_mp4_name = argv[3];
+//    char *in_yuv_name = argv[1];
+//    char *in_pcm_name = argv[2];
+//    char *out_mp4_name = argv[3];
+    char in_yuv_name[] = "/Users/xuqingjia/code/video/audio_video/yuv420p_1280x720.yuv";
+    char in_pcm_name[] = "/Users/xuqingjia/code/video/audio_video/48000_2_s16le.pcm";
+    char out_mp4_name[] = "/Users/xuqingjia/code/video/audio_video/a11111.mp4";
     FILE *in_yuv_fd = NULL;
     FILE *in_pcm_fd = NULL;
     //1. 打开测试文件
@@ -183,23 +186,16 @@ int main(int argc, char **argv)
                 printf("fread yuv_frame_buf finish\n");
             }
             if(video_finish != 1) {
-                //                packet = video_encoder.Encode(yuv_frame_buf, yuv_frame_size, video_index,
-                //                                              video_pts, video_time_base);
                 ret = video_encoder.Encode(yuv_frame_buf, yuv_frame_size,
                                            video_index, video_pts, video_time_base,
                                            packets);
             }else {
-                //                packet = video_encoder.Encode(NULL, 0, video_index,
-                //                                              video_pts, video_time_base);
                 printf("flush video encoder\n");
                 ret = video_encoder.Encode(NULL, 0,
                                            video_index, video_pts, video_time_base,
                                            packets);
             }
             video_pts += video_frame_duration;  // 叠加pts
-            //            if(packet) {
-            //                mp4_muxer.SendPacket(packet);
-            //            }
             if(ret >= 0) {
                 for(int i = 0; i < packets.size(); i++) {
                     ret = mp4_muxer.SendPacket(packets[i]);
@@ -218,24 +214,17 @@ int main(int argc, char **argv)
                 ret = audio_resampler.ResampleFromS16ToFLTP(pcm_frame_buf, fltp_frame);
                 if(ret < 0)
                     printf("ResampleFromS16ToFLTP error\n");
-                //                packet = audio_encoder.Encode(fltp_frame, audio_index,
-                //                                              audio_pts, audio_time_base);
                 ret = audio_encoder.Encode(fltp_frame,
                                            audio_index, audio_pts, audio_time_base,
                                            packets);
                 FreePcmFrame(fltp_frame);
             }else {
                 printf("flush audio encoder\n");
-                //                packet = audio_encoder.Encode(NULL,video_index,
-                //                                              audio_pts, audio_time_base);
                 ret = audio_encoder.Encode(NULL,
                                            audio_index, audio_pts, audio_time_base,
                                            packets);
             }
             audio_pts += audio_frame_duration;  // 叠加pts
-            //            if(packet) {
-            //                mp4_muxer.SendPacket(packet);
-            //            }
             if(ret >= 0) {
                 for(int i = 0; i < packets.size(); i++) {
                     ret = mp4_muxer.SendPacket(packets[i]);
